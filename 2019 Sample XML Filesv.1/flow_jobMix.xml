@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<JobMix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>flow_jobmix</Name>
+  <EstimatedTime>0</EstimatedTime>
+  <JobTypes>
+	<JobType>
+      <Name>JobTypeA</Name>
+      <Alternates>
+        <JobRoute>
+          <Name>JobTypeA-Alternate1</Name>
+          <OperationNames>
+			<OperationName>OperationRecA</OperationName>
+            <OperationName>Operation1A</OperationName>
+            <OperationName>Operation2A</OperationName>
+			<OperationName>OperationShA</OperationName>
+          </OperationNames>
+        </JobRoute>
+      </Alternates>
+      <Arrival xsi:type="FixedRVGenerator">
+        <Value>600</Value>
+      </Arrival>
+      <Batch xsi:type="FixedRVGenerator">
+        <Value>100</Value>
+      </Batch>
+      <DueDateTightness xsi:type="FixedRVGenerator">
+        <Value>1.5</Value>
+      </DueDateTightness>
+      <InputStationName>Receiving</InputStationName>
+      <OutputStationName>Shipping</OutputStationName>
+    </JobType>
+    <JobType>
+      <Name>JobTypeB</Name>
+      <Alternates>
+        <JobRoute>
+          <Name>JobTypeB-Alternate1</Name>
+          <OperationNames>
+			<OperationName>OperationRecB</OperationName>
+            <OperationName>Operation1B</OperationName>
+            <OperationName>Operation2B</OperationName>
+			<OperationName>OperationShB</OperationName>
+          </OperationNames>
+        </JobRoute>
+		<JobRoute>
+          <Name>JobTypeB-Alternate2</Name>
+		  <OperationNames>
+			<OperationName>OperationRecB</OperationName>
+			<OperationName>Operation1xB</OperationName>
+            <OperationName>Operation2B</OperationName>
+			<OperationName>OperationShB</OperationName>
+          </OperationNames>
+        </JobRoute>
+      </Alternates>
+      <Arrival xsi:type="FixedRVGenerator">
+        <Value>600</Value>
+      </Arrival>
+      <Batch xsi:type="FixedRVGenerator">
+        <Value>100</Value>
+      </Batch>
+      <DueDateTightness xsi:type="FixedRVGenerator">
+        <Value>1.5</Value>
+      </DueDateTightness>
+      <InputStationName>Receiving</InputStationName>
+      <OutputStationName>Shipping</OutputStationName>
+    </JobType>
+	<JobType>
+      <Name>JobTypeC</Name>
+      <Alternates>
+        <JobRoute>
+          <Name>JobTypeC-Alternate1</Name>
+          <OperationNames>
+			<OperationName>OperationRecC</OperationName>
+            <OperationName>Operation2C</OperationName>
+			<OperationName>OperationShC</OperationName>
+          </OperationNames>
+        </JobRoute>
+      </Alternates>
+      <Arrival xsi:type="FixedRVGenerator">
+        <Value>600</Value>
+      </Arrival>
+      <Batch xsi:type="FixedRVGenerator">
+        <Value>100</Value>
+      </Batch>
+      <DueDateTightness xsi:type="FixedRVGenerator">
+        <Value>1.5</Value>
+      </DueDateTightness>
+      <InputStationName>Receiving</InputStationName>
+      <OutputStationName>Shipping</OutputStationName>
+    </JobType>
+  </JobTypes>
+</JobMix>
