@@ -44,10 +44,10 @@ namespace FLOW.NET.Operational
             get { return this.queuesToPull; }
             set { this.queuesToPull = value; }
         }
-        public RequestList RequestsToReplenish
+        public OrderList OrdersToReplenish
         {
-            get { return this.requestsToReplenish; }
-            set { this.requestsToReplenish = value; }
+            get { return this.ordersToReplenish; }
+            set { this.ordersToReplenish = value; }
         }
 
         public Layout.Layout Layout

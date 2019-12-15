@@ -42,7 +42,7 @@ namespace Wrapper
             //3-Modify the algorithms as you desire 
             parameters.Algorithms.PartSequencingForProcessorAlgorithm = "FirstComeMustGo";
             parameters.Algorithms.StationControllerAlgorithm = "MixedProcessorConfiguration";
-            parameters.Algorithms.ReplenishmentControllerAlgorithm = "ByPassReplenish";
+            parameters.Algorithms.OrderControllerAlgorithm = "ByPassReplenish";
             parameters.Algorithms.OrderReleaseAlgorithm = "CyclicalImmediate";
             parameters.Algorithms.StationSelectionAlgorithm = "SelectionOfFirstStation";
             parameters.Algorithms.PullAlgorithm = "FirstBlockedFirstServed";
@@ -96,7 +96,7 @@ namespace Wrapper
             writer.WriteLine(String.Format("<OperationSelection>{0}</OperationSelection>", algorithms.OperationSelectionAlgorithm));
             writer.WriteLine(String.Format("<OrderRelease>{0}</OrderRelease>", algorithms.OrderReleaseAlgorithm));
             writer.WriteLine(String.Format("<StationController>{0}</StationController>", algorithms.StationControllerAlgorithm));
-            writer.WriteLine(String.Format("<ReplenishmentController>{0}</ReplenishmentController>", algorithms.ReplenishmentControllerAlgorithm));
+            writer.WriteLine(String.Format("<OrderController>{0}</OrderController>", algorithms.OrderControllerAlgorithm));
             writer.WriteLine(String.Format("<PartSequencingForProcessor>{0}</PartSequencingForProcessor>", algorithms.PartSequencingForProcessorAlgorithm));
             //writer.WriteLine(String.Format("<PartSequencingForOutQueue>{0}</PartSequencingForOutQueue>", algorithms.PartSequencingForOutQueueAlgorithm));
             #endregion
@@ -259,11 +259,11 @@ namespace Wrapper
                     writer.WriteLine("<BinMagazine>");
                     writer.WriteLine("<Name>{0}</Name>", station.BinMagazine.Name);
                     writer.WriteLine("<Statistics>");
-                    Statistics leadtime = (Statistics)station.BinMagazine.Statistics["RequestLeadTime"];
-                    writer.WriteLine(ReportAverageBasedStatistics("RequestLeadTime", leadtime));
+                    Statistics leadtime = (Statistics)station.BinMagazine.Statistics["OrderLeadTime"];
+                    writer.WriteLine(ReportAverageBasedStatistics("OrderLeadTime", leadtime));
 
-                    Statistics outstanding = (Statistics)station.BinMagazine.Statistics["OutstandingRequestCount"];
-                    writer.WriteLine(ReportUtilizationBasedStatistics("OutstandingRequestCount", outstanding, simulationManager));
+                    Statistics outstanding = (Statistics)station.BinMagazine.Statistics["OutstandingOrderCount"];
+                    writer.WriteLine(ReportUtilizationBasedStatistics("OutstandingOrderCount", outstanding, simulationManager));
 
 
                     foreach (ComponentType ct in station.BinMagazine.ComponentTypes)

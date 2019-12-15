@@ -24,7 +24,7 @@ namespace FLOW.NET.Operational
 
         private StationControllerAlgorithm stationControllerAlgorithm; //state
 
-        private ReplenishmentControllerAlgorithm replenishmentControllerAlgorithm; //IE486 12.12.18
+        private OrderControllerAlgorithm orderControllerAlgorithm; //IE486 12.12.18
 
         private PullAlgorithm pullAlgorithm;
 
@@ -72,10 +72,10 @@ namespace FLOW.NET.Operational
             set { this.stationControllerAlgorithm = value; }
         }
 
-        public ReplenishmentControllerAlgorithm ReplenishmentController
+        public OrderControllerAlgorithm OrderController
         {
-            get { return this.replenishmentControllerAlgorithm; }
-            set { this.replenishmentControllerAlgorithm = value; }
+            get { return this.orderControllerAlgorithm; }
+            set { this.orderControllerAlgorithm = value; }
         }
 
         public PartSequencingForProcessorAlgorithm PartSequencingForProcessor
@@ -90,7 +90,7 @@ namespace FLOW.NET.Operational
 
             this.orderRelease = OrderReleaseAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.OrderReleaseAlgorithm);
             this.stationControllerAlgorithm = StationControllerAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.StationControllerAlgorithm);
-            this.replenishmentControllerAlgorithm = ReplenishmentControllerAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.ReplenishmentControllerAlgorithm);
+            this.orderControllerAlgorithm = OrderControllerAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.OrderControllerAlgorithm);
             this.partSequencingForProcessor = PartSequencingForProcessorAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.PartSequencingForProcessorAlgorithm);
             this.pullAlgorithm = PullAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.PullAlgorithm);
             this.pushAlgorithm = PushAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.PushAlgorithm);
@@ -98,7 +98,7 @@ namespace FLOW.NET.Operational
             this.stationSelection = StationSelectionAlgorithm.GetAlgorithmByName(manager.Parameter.Algorithms.StationSelectionAlgorithm);
             this.orderRelease.Initialize(manager);
             this.stationControllerAlgorithm.Initialize(manager);
-            this.replenishmentControllerAlgorithm.Initialize(manager);
+            this.orderControllerAlgorithm.Initialize(manager);
             this.partSequencingForProcessor.Initialize(manager);
             this.pullAlgorithm.Initialize(manager);     //IE486f18
             this.pushAlgorithm.Initialize(manager);     //IE486f18
@@ -112,7 +112,7 @@ namespace FLOW.NET.Operational
             this.pullAlgorithm.Execute();
             this.pushAlgorithm.Execute();
             this.StationController.Execute();
-            this.ReplenishmentController.Execute();
+            this.OrderController.Execute();
 
         }
 

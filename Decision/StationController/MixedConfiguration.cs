@@ -36,7 +36,7 @@ namespace FLOW.NET.Decision.StationController
                             this.Manager.EventCalendar.ScheduleStartProcessEvent(this.Manager.Time, selectedprocessor, unit, transferTime);
                             selectedprocessor.Reserved++;
                             ((Station)selectedprocessor.Parent).BinMagazine.SpendComponent(unit.Operation.ComponentUsages);
-                            ((Station)selectedprocessor.Parent).BinMagazine.CheckComponentRequest(unit.Operation.ComponentUsages);                            
+                            ((Station)selectedprocessor.Parent).BinMagazine.CheckComponentOrder(unit.Operation.ComponentUsages);                            
                         }
                         if (stationIn.GetFreeProcessors().Count == 0)
                             break;

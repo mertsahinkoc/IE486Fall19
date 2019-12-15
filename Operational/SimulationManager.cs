@@ -192,8 +192,8 @@ namespace FLOW.NET.Operational
                     string[] seperated = inventoryPolicy.Split(',');
                     string componentTypeName = seperated[0];
                     double reorderPoint = Convert.ToDouble(seperated[1],System.Globalization.CultureInfo.InvariantCulture); 
-                    int replenishmentAmount = Convert.ToInt32(seperated[2]);
-                    SQParameter InventoryPolicy = new SQParameter(reorderPoint, replenishmentAmount);
+                    int orderAmount = Convert.ToInt32(seperated[2]);
+                    SQParameter InventoryPolicy = new SQParameter(reorderPoint, orderAmount);
                     station.BinMagazine.InventoryPolicies.Add(this.layoutManager.Layout.ComponentTypes[componentTypeName], InventoryPolicy);
                 }
                 station.BinMagazine.CreateStatistics();
@@ -460,9 +460,9 @@ namespace FLOW.NET.Operational
         {
             this.JobManager.UnitloadsToPush.Add(unitloadIn);
         }
-        public void TriggerRequest(Request requestIn)
+        public void TriggerOrder(Order orderIn)
         {
-            this.LayoutManager.RequestsToReplenish.Add(requestIn);
+            this.LayoutManager.OrdersToReplenish.Add(orderIn);
         }
     }
 

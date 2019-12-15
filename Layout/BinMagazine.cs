@@ -10,13 +10,13 @@ namespace FLOW.NET.Layout
     {
         private RVGenerator loadunloadTime; //state
         private InventoryPolicyDictionary inventoryPolicy;
-        private RequestList outstandingRequests;
+        private OrderList outstandingOrders;
         private ComponentTypeList componentTypes;
         private StringList inventoryPolicyNameList;
         
         public BinMagazine()
         {
-            this.outstandingRequests = new RequestList();
+            this.outstandingOrders = new OrderList();
             this.inventoryPolicy = new InventoryPolicyDictionary();
             this.inventoryPolicyNameList = new StringList();
             this.componentTypes = new ComponentTypeList();
@@ -26,7 +26,7 @@ namespace FLOW.NET.Layout
             : base(nameIn, parentIn, capacityIn,nodeIn)
         {
             this.loadunloadTime = loadunloadTimeIn;
-            this.outstandingRequests = new RequestList();
+            this.outstandingOrders = new OrderList();
             this.inventoryPolicy = new InventoryPolicyDictionary();
             this.inventoryPolicyNameList = new StringList();
             this.componentTypes = new ComponentTypeList();
@@ -34,10 +34,10 @@ namespace FLOW.NET.Layout
 
 
         [XmlIgnore()]
-        public RequestList OutstandingRequests
+        public OrderList OutstandingOrders
         {
-            get { return this.outstandingRequests; }
-            set { this.outstandingRequests= value; }
+            get { return this.outstandingOrders; }
+            set { this.outstandingOrders= value; }
         }
 
         [XmlIgnore()]
@@ -122,10 +122,10 @@ namespace FLOW.NET.Layout
 
         public void ClearStatistics(double timeIn)  //  486update 25.12.2018 degisikliler yapildi
         {
-            Statistics requestLeadTime = this.Statistics["RequestLeadTime"];
-            requestLeadTime.Clear(timeIn, 0);
-            Statistics outstandingRequestCount = this.Statistics["OutstandingRequestCount"];
-            outstandingRequestCount.Clear(timeIn, this.OutstandingRequests.Count);
+            Statistics orderLeadTime = this.Statistics["OrderLeadTime"];
+            orderLeadTime.Clear(timeIn, 0);
+            Statistics outstandingOrderCount = this.Statistics["OutstandingOrderCount"];
+            outstandingOrderCount.Clear(timeIn, this.OutstandingOrders.Count);
             foreach (ComponentType ct in componentTypes)
             {
                 Statistics componentTypeCount = this.Statistics["ComponentTypeCount-" + ct.Name];
@@ -137,8 +137,8 @@ namespace FLOW.NET.Layout
 
         public void CreateStatistics()
         {
-            this.Statistics.Add("RequestLeadTime", new Statistics(0)); //update average lead time
-            this.Statistics.Add("OutstandingRequestCount", new Statistics(0)); //toplam outstanding request sayısı * time ---updateweighted
+            this.Statistics.Add("OrderLeadTime", new Statistics(0)); //update average lead time
+            this.Statistics.Add("OutstandingOrderCount", new Statistics(0)); //toplam outstanding request sayısı * time ---updateweighted
             foreach(ComponentType ct in componentTypes)
             {
                 this.Statistics.Add("ComponentTypeCount-" + ct.Name, new Statistics(0)); //updateweighted
@@ -148,8 +148,8 @@ namespace FLOW.NET.Layout
 
         public void FinalizeStatistics(double timeIn)
         {
-            Statistics outstandingCount = this.Statistics["OutstandingRequestCount"];
-            outstandingCount.UpdateWeighted(timeIn, this.outstandingRequests.Count);//  486update 25.12.2018 
+            Statistics outstandingCount = this.Statistics["OutstandingOrderCount"];
+            outstandingCount.UpdateWeighted(timeIn, this.outstandingOrders.Count);//  486update 25.12.2018 
             foreach (ComponentType ct in this.componentTypes)
             {
                 Statistics componenttypeCount = this.Statistics["ComponentTypeCount-" + ct.Name];
@@ -210,22 +210,22 @@ namespace FLOW.NET.Layout
         }
 
         //Checks current inventory position with safety stock level
-        public void CheckComponentRequest(ComponentTypeUsageDictionary ComponentUsages)
+        public void CheckComponentOrder(ComponentTypeUsageDictionary ComponentUsages)
         {
             foreach (ComponentType ct in ComponentUsages.Keys)
             {
                 double inventoryPosition = GetComponentLevel(ct);
                 if (inventoryPosition < this.inventoryPolicy[ct].S)
                 {
-                    Statistics OutstandingRequestCount = this.Statistics["OutstandingRequestCount"];
+                    Statistics OutstandingOrderCount = this.Statistics["OutstandingOrderCount"];
 
                     for (int i = 0; i < this.inventoryPolicy[ct].Q; i++)
                     {
-                        Request request = new Request(this, ct, ((SimulationManager) this.Parent.Parent.Parent.Parent).Time); 
-                        this.outstandingRequests.Add(request);
-                        ((SimulationManager)this.Parent.Parent.Parent.Parent).TriggerRequest(request);               
+                        Order order = new Order(this, ct, ((SimulationManager)this.Parent.Parent.Parent.Parent).Time);
+                        this.outstandingOrders.Add(order);
+                        ((SimulationManager)this.Parent.Parent.Parent.Parent).TriggerOrder(order);
                     }
-                    OutstandingRequestCount.UpdateWeighted(((SimulationManager)this.Parent.Parent.Parent.Parent).Time, this.outstandingRequests.Count);
+                    OutstandingOrderCount.UpdateWeighted(((SimulationManager)this.Parent.Parent.Parent.Parent).Time, this.outstandingOrders.Count);
                 }
             }
         }
@@ -246,7 +246,7 @@ namespace FLOW.NET.Layout
         private double GetComponentLevel(ComponentType ct) 
         {
             double count = GetNumberOfBins(ct);
-            foreach (Request r in this.outstandingRequests) //assumption: each request is one bin 
+            foreach (Order r in this.outstandingOrders) //assumption: each request is one bin 
             {
                 if (r.ComponentType == ct)
                 {
@@ -271,22 +271,22 @@ namespace FLOW.NET.Layout
         public void Receive(double timeIn, Bin binIn)
         {
             this.Content.Add(binIn);            
-            this.CloseRequest(binIn.ComponentType, timeIn);
+            this.CloseOrder(binIn.ComponentType, timeIn);
         }
 
         //If the request has come to bin magazine, deletes it from outstanding requests
-        private void CloseRequest(ComponentType componentTypeIn, double timeIn)
+        private void CloseOrder(ComponentType componentTypeIn, double timeIn)
         {
-            foreach(Request request in this.outstandingRequests)
+            foreach (Order order in this.outstandingOrders)
             {
-                if (request.ComponentType == componentTypeIn)
+                if (order.ComponentType == componentTypeIn)
                 {
                     double now = ((SimulationManager)this.Parent.Parent.Parent.Parent).Time;
-                    this.outstandingRequests.Remove(request);
-                    Statistics OutstandingRequestCount = this.Statistics["OutstandingRequestCount"];
-                    OutstandingRequestCount.UpdateWeighted(now, this.outstandingRequests.Count);
-                    Statistics RequestLeadTime = this.Statistics["RequestLeadTime"];
-                    RequestLeadTime.UpdateAverage(now, (now - request.Time));
+                    this.outstandingOrders.Remove(order);
+                    Statistics OutstandingOrderCount = this.Statistics["OutstandingOrderCount"];
+                    OutstandingOrderCount.UpdateWeighted(now, this.outstandingOrders.Count);
+                    Statistics OrderLeadTime = this.Statistics["OrderLeadTime"];
+                    OrderLeadTime.UpdateAverage(now, (now - order.OrderTime));
                     return;
                 }
             }

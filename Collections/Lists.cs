@@ -78,7 +78,10 @@ namespace FLOW.NET
     public class EventList : List<Event>
     {
     }
-    public class RequestList : List<Request>
+    public class OrderList : List<Order>
+    {
+    }
+    public class TransferTaskList : List<TransferTask>
     {
     }
     public class EventStateList : List<EventState>

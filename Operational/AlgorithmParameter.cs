@@ -12,7 +12,7 @@ namespace FLOW.NET.Operational
 
         private string stationControllerAlgorithm;
 
-        private string replenishmentControllerAlgorithm;
+        private string orderControllerAlgorithm;
 
         private string partSequencingForProcessorAlgorithm;
 
@@ -78,11 +78,11 @@ namespace FLOW.NET.Operational
             set { this.stationControllerAlgorithm = value; }
         }
 
-        [XmlElement("ReplenishmentControllerAlgorithm")]
-        public string ReplenishmentControllerAlgorithm
+        [XmlElement("OrderControllerAlgorithm")]
+        public string OrderControllerAlgorithm
         {
-            get { return this.replenishmentControllerAlgorithm; }
-            set { this.replenishmentControllerAlgorithm = value; }
+            get { return this.orderControllerAlgorithm; }
+            set { this.orderControllerAlgorithm = value; }
         }
 
         [XmlElement("PartSequencingForProcessorAlgorithm")]
