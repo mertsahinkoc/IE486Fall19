@@ -460,9 +460,9 @@ namespace FLOW.NET.Operational
         {
             this.JobManager.UnitloadsToPush.Add(unitloadIn);
         }
-        public void TriggerOrder(Order orderIn)
+        public void OpenOrder(Order orderIn) //ie486fall19
         {
-            this.LayoutManager.OrdersToReplenish.Add(orderIn);
+            this.OrderManager.OrdersToReplenish.Add(orderIn);
         }
     }
 
