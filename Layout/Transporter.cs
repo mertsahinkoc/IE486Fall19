@@ -13,10 +13,17 @@ namespace FLOW.NET.Layout
     [XmlType("Transporter")]
     public class Transporter : MovableObject
     {
-        private StorageList storages;
+
+        // IE 486 Fall 19
+        private double capacity;
+        private Node parkNode; //Park Node number is assumed to be 1 for Fall19
+        private NodeList serviceNodes;
+        private double speed;
+        // IE 486 Fall 19
+        //private StorageList storages;
         private NodeList route;
-        private RVGenerator transferTime; //for bypass algorithm
-        private RVGenerator travelTime; //for bypass algorithm
+        //private RVGenerator transferTime; //for bypass algorithm
+        //private RVGenerator travelTime; //for bypass algorithm
         private BinList content;
 
         //Transporter number is assumed to be 1 for ie486f18
@@ -27,40 +34,32 @@ namespace FLOW.NET.Layout
             this.CreateStatistics();
         }
 
-        public Transporter (string nameIn, FLOWObject parentIn, RVGenerator transferTimeIn, RVGenerator travelTimeIn)
+        public Transporter (string nameIn, FLOWObject parentIn)
             : base(nameIn, parentIn)
         {
-            this.TransferTime = transferTimeIn;
-            this.TravelTime = travelTimeIn;
             this.CreateStatistics();
         }
 
 
-        [XmlIgnore()]
-        public StorageList Storages
-        {
-            get { return this.storages; }
-            set { this.storages = value; }
-        }
+        //[XmlIgnore()]
+        //public StorageList Storages
+        //{
+        //    get { return this.storages; }
+        //    set { this.storages = value; }
+        //}
         [XmlIgnore()]
         public BinList Content
         {
             get { return this.content; }
             set { this.content = value; }
         }
-        [XmlElement("TravelTime", typeof(RVGenerator))]
-        public RVGenerator TravelTime
-        {
-            get { return this.travelTime; }
-            set { this.travelTime = value; }
-        }
+        //[XmlElement("TravelTime", typeof(RVGenerator))]
+        //public RVGenerator TravelTime
+        //{
+        //    get { return this.travelTime; }
+        //    set { this.travelTime = value; }
+        //}
 
-        [XmlElement("TransferTime", typeof(RVGenerator))]
-        public RVGenerator TransferTime
-        {
-            get { return this.transferTime; }
-            set { this.transferTime = value; }
-        }
 
         [XmlIgnore()]
         public NodeList Route
@@ -68,6 +67,35 @@ namespace FLOW.NET.Layout
             get { return this.route; }
             set { this.route = value; }
         }
+
+        //Fall19
+        [XmlElement("Capacity")]
+        public double Capacity
+        {
+            get { return this.capacity; }
+            set { this.capacity = value; }
+        }
+        [XmlElement("ParkNode")]
+        public Node ParkNode
+        {
+            get { return this.parkNode; }
+            set { this.parkNode = value; }
+        }
+        [XmlElement("ServiceNodes")]
+        public NodeList ServiceNodes
+        {
+            get { return this.serviceNodes; }
+            set { this.serviceNodes = value; }
+        }
+        [XmlElement("Speed")]
+        public double Speed
+        {
+            get { return this.speed; }
+            set { this.speed = value; }
+        }
+
+        //Fall19
+
 
         public void Release(double timeIn, Bin binIn)
         {
