@@ -10,7 +10,7 @@ using FLOW.NET.Layout;
 
 namespace FLOW.NET.Operational.Events
 {
-    class SeizeNodeEvent : Event
+    public class SeizeNodeEvent : Event
     {
         private Transporter transporter;
         public SeizeNodeEvent()

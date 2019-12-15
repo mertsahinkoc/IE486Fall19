@@ -84,6 +84,32 @@ namespace FLOW.NET.Operational
             this.ScheduleEvent(endPlanningPeriodEvent);
         }
 
+        public void ScheduleSeizeNodeEvent(double timeIn, Transporter transporterIn)
+        {
+            SeizeNodeEvent seizeNodeEvent = new SeizeNodeEvent(timeIn, this.manager, transporterIn);
+            this.ScheduleEvent(seizeNodeEvent);
+        }
+        public void ScheduleEndLoadEvent(double timeIn, Transporter transporterIn)
+        {
+            EndLoadEvent endLoadEvent = new EndLoadEvent(timeIn, this.manager, transporterIn);
+            this.ScheduleEvent(endLoadEvent);
+        }
+        public void ScheduleEndUnloadEvent(double timeIn, Transporter transporterIn)
+        {
+            EndUnloadEvent endUnloadEvent = new EndUnloadEvent(timeIn, this.manager, transporterIn);
+            this.ScheduleEvent(endUnloadEvent);
+        }
+        public void ScheduleByPassEvent(double timeIn, Bin binIn)
+        {
+            BypassEvent byPassEvent = new BypassEvent(timeIn, this.manager, binIn);
+            this.ScheduleEvent(byPassEvent);
+        }
+        public void ScheduleEndPickEvent(double timeIn, Bin binIn)
+        {
+            EndPickEvent endPickEvent = new EndPickEvent(timeIn, this.manager, binIn);
+            this.ScheduleEvent(endPickEvent);
+        }
+
         public void ScheduleEndProcessEvent(double timeIn, Processor processorIn)
         {
             bool breakdown = false;
